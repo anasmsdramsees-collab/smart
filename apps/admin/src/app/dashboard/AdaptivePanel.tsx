@@ -170,10 +170,10 @@ export default function AdaptivePanel({ organizationId }: { organizationId: stri
 
       {composing && (
         <div className="mx-4 mb-4 rounded-xl border border-white/[0.07] bg-[#0d131d] p-4">
-          <div className="grid grid-cols-2 gap-3 xl:grid-cols-3">
-            <label className="col-span-2 xl:col-span-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <label className="sm:col-span-2 xl:col-span-3">
               <span className="mb-1 block text-[11px] text-[#6c7a90]">{t.adaptive.objective}</span>
-              <div className="grid grid-cols-2 gap-2 xl:grid-cols-5">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-5">
                 {OBJECTIVES.map((o) => (
                   <button
                     key={o}
@@ -193,7 +193,7 @@ export default function AdaptivePanel({ organizationId }: { organizationId: stri
               </div>
             </label>
 
-            <label className="col-span-2 xl:col-span-3">
+            <label className="sm:col-span-2 xl:col-span-3">
               <span className="mb-1 block text-[11px] text-[#6c7a90]">{t.adaptive.goalName}</span>
               <input
                 value={name}

@@ -8,7 +8,7 @@ import { apiFetch, clearToken } from '@/lib/api';
 import {
   Home, Lightbulb, Wind, Blinds, Lock, Camera, Sparkles, Cpu, BarChart3, Bell, Settings,
   Search, MessageSquare, Play, Plus, ArrowLeft, Thermometer, Leaf, Zap, ShieldCheck,
-  Sun, Moon, Clapperboard, Plane, CloudSun, Video, Car, Droplets, Tv, LogOut, Sparkle,
+  Sun, Moon, Clapperboard, Plane, CloudSun, Video, Car, Droplets, Tv, LogOut, Sparkle, Menu,
 } from 'lucide-react';
 import HouseMap from './HouseMap';
 import AdaptivePanel from './AdaptivePanel';
@@ -169,6 +169,7 @@ export default function DashboardPage() {
   const [locked, setLocked] = useState(true);
   const [garage, setGarage] = useState(false);
   const [listening, setListening] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
   const [orgId, setOrgId] = useState('');
 
   useEffect(() => {
@@ -385,7 +386,20 @@ export default function DashboardPage() {
        reference design; every text-bearing block below re-enters RTL. */
     <div dir="ltr" className="ui-reset relative flex h-screen overflow-hidden bg-[#05080f] text-white">
       {/* ── Sidebar ──────────────────────────────────────────────── */}
-      <aside dir={dir} className="flex w-[236px] shrink-0 flex-col border-l border-white/[0.07] bg-[#0b1018] p-4">
+      {/* Backdrop for the mobile drawer */}
+      {navOpen && (
+        <div
+          onClick={() => setNavOpen(false)}
+          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
+        />
+      )}
+
+      <aside
+        dir={dir}
+        className={`fixed inset-y-0 left-0 z-40 flex w-[236px] shrink-0 flex-col border-l border-white/[0.07] bg-[#0b1018] p-4 transition-transform lg:static lg:z-auto lg:translate-x-0 ${
+          navOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
         <div className="mb-6 px-1 pt-1">
           <Image
             src="/syltra-wordmark.png"
@@ -401,7 +415,10 @@ export default function DashboardPage() {
           {NAV.map(({ id, Icon }) => (
             <button
               key={id}
-              onClick={() => setActive(id)}
+              onClick={() => {
+                setActive(id);
+                setNavOpen(false);
+              }}
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-semibold transition ${
                 active === id
                   ? 'border border-[#2b7eff]/40 bg-[#2b7eff]/10 text-[#4c8dff]'
@@ -440,17 +457,31 @@ export default function DashboardPage() {
       {/* ── Main column ──────────────────────────────────────────── */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* top bar */}
-        <header className="flex shrink-0 items-center gap-5 px-6 py-4">
-          <div dir={dir} className="shrink-0">
-            <h1 className="text-[21px] font-black leading-tight">{t.shell.greeting} 👋</h1>
-            <p className="text-[12px] text-[#6c7a90]">{t.shell.tagline}</p>
+        <header className="flex shrink-0 flex-wrap items-center gap-3 px-4 py-3 sm:gap-5 sm:px-6 sm:py-4">
+          <button
+            onClick={() => setNavOpen(true)}
+            aria-label="menu"
+            className="rounded-lg p-2 text-[#8b98ab] transition hover:bg-white/[0.06] hover:text-white lg:hidden"
+          >
+            <Menu size={20} />
+          </button>
+
+          <div dir={dir} className="min-w-0 flex-1 lg:flex-none lg:shrink-0">
+            <h1 className="truncate text-[17px] font-black leading-tight sm:text-[21px]">
+              {t.shell.greeting} 👋
+            </h1>
+            <p className="truncate text-[11px] text-[#6c7a90] sm:text-[12px]">{t.shell.tagline}</p>
           </div>
 
-          <div dir={dir} className="flex flex-1 flex-wrap justify-center gap-2.5">
+          {/* Scrolls sideways on a phone rather than wrapping into a tall stack */}
+          <div
+            dir={dir}
+            className="order-last flex w-full gap-2.5 overflow-x-auto pb-1 lg:order-none lg:w-auto lg:flex-1 lg:flex-wrap lg:justify-center lg:overflow-visible lg:pb-0"
+          >
             {STATUS.map(({ label, value, Icon, tint }) => (
               <div
                 key={label}
-                className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-[#0b1018] px-3.5 py-2"
+                className="flex shrink-0 items-center gap-3 rounded-xl border border-white/[0.07] bg-[#0b1018] px-3.5 py-2"
               >
                 <div className="text-right">
                   <div className="text-[10px] leading-tight text-[#6c7a90]">{label}</div>
@@ -463,10 +494,10 @@ export default function DashboardPage() {
 
           <div className="flex shrink-0 items-center gap-1.5">
             <LocaleToggle />
-            <button className="rounded-lg p-2 text-[#8b98ab] transition hover:bg-white/[0.06] hover:text-white">
+            <button className="hidden rounded-lg p-2 text-[#8b98ab] transition hover:bg-white/[0.06] hover:text-white sm:block">
               <Search size={19} />
             </button>
-            <button className="rounded-lg p-2 text-[#8b98ab] transition hover:bg-white/[0.06] hover:text-white">
+            <button className="hidden rounded-lg p-2 text-[#8b98ab] transition hover:bg-white/[0.06] hover:text-white sm:block">
               <MessageSquare size={19} />
             </button>
             <button className="relative rounded-lg p-2 text-[#8b98ab] transition hover:bg-white/[0.06] hover:text-white">
@@ -486,7 +517,7 @@ export default function DashboardPage() {
         </header>
 
         {/* content grid */}
-        <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_330px] gap-5 overflow-y-auto px-6 pb-28">
+        <div className="grid min-h-0 flex-1 grid-cols-1 gap-5 overflow-y-auto px-4 pb-32 sm:px-6 lg:grid-cols-[minmax(0,1fr)_330px]">
           {/* centre */}
           <div dir={dir} className="min-w-0 space-y-5">
             {active === 'home' && (
@@ -573,7 +604,7 @@ export default function DashboardPage() {
                     </span>
                   }
                 />
-                <div className="grid grid-cols-2 gap-3 px-4 pb-4 xl:grid-cols-4">
+                <div className="grid grid-cols-1 gap-3 px-4 pb-4 sm:grid-cols-2 xl:grid-cols-4">
                   {visibleCards.map((card) => (
                     <Fragment key={card.id}>{card.el}</Fragment>
                   ))}
@@ -668,8 +699,11 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Floating bottom bar ──────────────────────────────────── */}
-      <div dir={dir} className="pointer-events-none absolute bottom-5 left-0 right-[236px] flex justify-center">
-        <div className="pointer-events-auto flex items-center gap-1 rounded-2xl border border-white/10 bg-[#0b1018]/95 px-3 py-2 shadow-2xl backdrop-blur">
+      <div
+        dir={dir}
+        className="pointer-events-none absolute bottom-4 left-0 right-0 z-20 flex justify-center px-3 sm:bottom-5 lg:right-[236px]"
+      >
+        <div className="pointer-events-auto flex max-w-full items-center gap-1 rounded-2xl border border-white/10 bg-[#0b1018]/95 px-2 py-2 shadow-2xl backdrop-blur sm:px-3">
           <button
             onClick={() => setActive('home')}
             className={`flex items-center gap-2 rounded-xl px-4 py-2 text-[12px] font-bold transition ${
@@ -677,11 +711,11 @@ export default function DashboardPage() {
             }`}
           >
             <Home size={18} />
-            {t.nav.home}
+            <span className="hidden sm:inline">{t.nav.home}</span>
           </button>
           <button className="flex items-center gap-2 rounded-xl px-4 py-2 text-[12px] font-semibold text-[#8b98ab] transition hover:text-white">
             <Tv size={18} />
-            {t.shell.tv}
+            <span className="hidden sm:inline">{t.shell.tv}</span>
           </button>
           {/* SILA. The brand sheet defines four interaction states; idle and
               listening are wired here, thinking/responding land with the
@@ -725,7 +759,7 @@ export default function DashboardPage() {
             }`}
           >
             <Bell size={18} />
-            {t.nav.alerts}
+            <span className="hidden sm:inline">{t.nav.alerts}</span>
             <span className="absolute right-2 top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#ef4444] text-[8px] font-bold text-white">
               3
             </span>
@@ -737,7 +771,7 @@ export default function DashboardPage() {
             }`}
           >
             <Settings size={18} />
-            {t.nav.settings}
+            <span className="hidden sm:inline">{t.nav.settings}</span>
           </button>
         </div>
       </div>

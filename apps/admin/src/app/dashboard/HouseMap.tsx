@@ -176,17 +176,20 @@ export default function HouseMap() {
           return (
             <button
               key={r.id}
-              className="group absolute -translate-x-1/2 -translate-y-1/2 rounded-xl border border-white/10 bg-[#0b1220]/85 px-2.5 py-1.5 text-center backdrop-blur transition hover:border-[#4c8dff]/60 hover:bg-[#0e1a2e]/95"
+              className="group absolute -translate-x-1/2 -translate-y-1/2 rounded-lg border border-white/10 bg-[#0b1220]/85 px-1.5 py-1 text-center backdrop-blur transition hover:border-[#4c8dff]/60 hover:bg-[#0e1a2e]/95 sm:rounded-xl sm:px-2.5 sm:py-1.5"
               style={{
                 left: `${(px(cx, cy) / 640) * 100}%`,
                 top: `${(py(cx, cy, 1.5) / 400) * 100}%`,
               }}
             >
-              <r.Icon size={15} className="mx-auto mb-0.5 text-[#9fb6d6] group-hover:text-[#4c8dff]" />
-              <div className="whitespace-nowrap text-[10px] font-semibold leading-tight text-white">
+              <r.Icon
+                size={13}
+                className="mx-auto mb-0.5 text-[#9fb6d6] group-hover:text-[#4c8dff] sm:h-[15px] sm:w-[15px]"
+              />
+              <div className="whitespace-nowrap text-[8px] font-semibold leading-tight text-white sm:text-[10px]">
                 {t.map[r.labelKey]}
               </div>
-              <div className="whitespace-nowrap text-[9px] leading-tight text-[#7c8ba1]">
+              <div className="hidden whitespace-nowrap text-[9px] leading-tight text-[#7c8ba1] sm:block">
                 {reading(r.value)}
               </div>
             </button>
