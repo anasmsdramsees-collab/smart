@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies (all workspaces)
+        run: npm install
+
+      - name: Build shared packages
+        run: npm run build --workspace=packages/mqtt-contracts
+
+      - name: Lint shared packages
+        run: npm run lint --workspace=packages/mqtt-contracts
+
+      - name: Lint API
+        run: npm run api:lint
+
+      - name: Test API
+        run: npm run api:test
+
+      - name: Build API
+        run: npm run api:build
+
+      - name: Lint Edge Agent
+        run: npm run lint --workspace=edge/syltra-edge-agent
+
+      - name: Test Edge Agent
+        run: npm run test --workspace=edge/syltra-edge-agent
+
+      - name: Build Edge Agent
+        run: npm run build --workspace=edge/syltra-edge-agent
+
+      - name: Lint Admin
+        run: npm run admin:lint
+
+      - name: Build Admin
+        run: npm run admin:build

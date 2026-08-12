@@ -1,0 +1,46 @@
+{
+  "name": "@syltra/edge-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SYLTRA Edge Agent — bridges a SYLTRA Hub, Home Assistant, and SYLTRA Cloud (MQTT).",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "start:dev": "ts-node src/index.ts",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint \"src/**/*.ts\" --max-warnings=0",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@syltra/mqtt-contracts": "^0.1.0",
+    "dotenv": "^16.4.5",
+    "mqtt": "^5.10.1",
+    "node-fetch": "^2.7.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.0",
+    "@types/node-fetch": "^2.6.13",
+    "@types/ws": "^8.5.12",
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  },
+  "jest": {
+    "rootDir": ".",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.*
+
+# Build output
+dist/
+build/
+out/
+.next/
+*.tsbuildinfo
+next-env.d.ts
+
+# Test output
+coverage/
+
+# Secrets. .env holds the real Postgres password and JWT secret; only the
+# template is committed.
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.pem
+*.log
+npm-debug.log*
+
+# A stray nested copy of the marketing site (brand, posters, company profile —
+# ~300 MB). It is not one of this monorepo's workspaces and has its own home.
+/platform/
+
+# Loose reference images dropped at the repo root during design work. Product
+# assets that the apps actually serve live under apps/*/public and are kept.
+/*.PNG
+/*.png
+/*.jpg
+/*.jpeg

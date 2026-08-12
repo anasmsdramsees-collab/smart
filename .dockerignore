@@ -1,0 +1,53 @@
+# Both service images build from the repo root (see docker-compose.yml), so this
+# file governs every image build.
+#
+# Two things it fixes, not just size:
+#   - A stale host `dist/` plus `tsconfig.tsbuildinfo` used to be copied into the
+#     image, which made `nest build` believe the output was already up to date.
+#     It emitted nothing and the container crashed on a missing dist/main.js.
+#   - Host node_modules (built for darwin) shadowing the linux install.
+
+# Build output and incremental-build state
+dist
+**/dist
+build
+**/build
+.next
+**/.next
+out
+**/out
+*.tsbuildinfo
+**/*.tsbuildinfo
+coverage
+**/coverage
+
+# Dependencies — reinstalled inside the image for the target platform
+node_modules
+**/node_modules
+
+# VCS and tooling
+.git
+.gitignore
+.github
+.vscode
+.idea
+.DS_Store
+**/.DS_Store
+*.log
+
+# Local env; real values arrive through docker-compose `environment`
+.env
+.env.*
+!.env.example
+
+# Brand and marketing assets — hundreds of MB of posters and renders that no
+# service image needs at runtime. Public web assets under apps/*/public are
+# deliberately NOT excluded.
+platform/
+company-profile/
+identity/
+posters/
+*.PNG
+*.jpg
+*.jpeg
+!apps/**/public/**

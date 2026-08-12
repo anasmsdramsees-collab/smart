@@ -1,0 +1,28 @@
+{
+  "name": "syltra-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SYLTRA Cloud platform monorepo: Cloud API, Edge Agent, Home Assistant integration, Adaptive Core.",
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*",
+    "edge/*",
+    "integrations/*"
+  ],
+  "scripts": {
+    "postinstall": "npm run build --workspace=packages/mqtt-contracts",
+    "packages:build": "npm run build --workspace=packages/mqtt-contracts",
+    "api:dev": "npm run start:dev --workspace=services/api",
+    "api:build": "npm run build --workspace=services/api",
+    "api:start": "npm run start:prod --workspace=services/api",
+    "api:test": "npm run test --workspace=services/api",
+    "api:lint": "npm run lint --workspace=services/api",
+    "admin:dev": "npm run dev --workspace=apps/admin",
+    "admin:build": "npm run build --workspace=apps/admin",
+    "admin:lint": "npm run lint --workspace=apps/admin"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

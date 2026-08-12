@@ -1,0 +1,874 @@
+/* SYLTRA design tokens — copied from brand/brand-guidelines-v1.0.html and
+   syltra-home-app/lib/theme/syntra_theme.dart so this dashboard reads as the
+   same product as the marketing site and the resident-facing Syltra Home app,
+   not a different tool wearing the logo. */
+
+@tailwind base;
+
+/* The pre-Tailwind stylesheet below lives in the base layer so utility
+   classes always win over these element-level rules. */
+@layer base {
+
+  :root {
+    --void: #0b0c0e;
+    --void-2: #0e1013;
+    --graphite: #17181c;
+    --graphite-2: #1f2126;
+    --slate: #6b707a;
+    --chrome-dim: #8b9099;
+    --chrome: #c7ccd3;
+    --platinum: #ecedef;
+    --ion: #4c8dff;
+    --ion-dim: #2c4d8c;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --hairline: rgba(199, 204, 211, 0.14);
+    --hairline-strong: rgba(199, 204, 211, 0.28);
+    --r-sm: 2px;
+    --r-md: 6px;
+    --r-lg: 16px;
+
+    color-scheme: dark;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--void);
+    color: var(--platinum);
+    font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: var(--ion);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 0.9rem;
+  }
+
+  th {
+    color: var(--slate);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  td {
+    color: var(--chrome);
+  }
+
+  code,
+  .mono {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.85em;
+  }
+
+  input,
+  select {
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.55rem 0.7rem;
+    background: var(--graphite);
+    color: var(--platinum);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+  }
+
+  input::placeholder {
+    color: var(--slate);
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--ion);
+  }
+
+  button {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    background: var(--platinum);
+    color: var(--void);
+    border: none;
+    border-radius: var(--r-md);
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  button:disabled {
+    background: var(--graphite-2);
+    color: var(--slate);
+    cursor: not-allowed;
+  }
+
+  button.secondary {
+    background: transparent;
+    color: var(--platinum);
+    border: 1px solid var(--hairline-strong);
+  }
+
+  .card {
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    background: var(--graphite);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .error {
+    color: var(--danger);
+  }
+
+  .muted {
+    color: var(--chrome-dim);
+    font-size: 0.9rem;
+  }
+
+  .label {
+    color: var(--slate);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-dot.online {
+    background: var(--success);
+  }
+
+  .status-dot.offline {
+    background: var(--slate);
+  }
+
+  .status-dot.pending,
+  .status-dot.unknown {
+    background: var(--warning);
+  }
+
+  .list-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--hairline);
+    cursor: pointer;
+  }
+
+  .list-row:last-child {
+    border-bottom: none;
+  }
+
+  .list-row:hover {
+    background: var(--graphite-2);
+  }
+
+  .list-row.selected {
+    background: var(--graphite-2);
+    box-shadow: inset 2px 0 0 var(--ion);
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--chrome-dim);
+    padding: 2rem 1rem;
+  }
+
+  /* App shell: fixed sidebar + scrollable content, mirroring Home Assistant's layout. */
+  .app-shell {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 232px;
+    flex-shrink: 0;
+    background: var(--graphite);
+    border-right: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0.75rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.6rem 1.25rem;
+  }
+
+  .sidebar-brand h1 {
+    font-size: 1rem;
+  }
+
+  .sidebar-org {
+    margin: 0 0.1rem 1rem;
+  }
+
+  .sidebar-org select {
+    width: 100%;
+    background: var(--graphite-2);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: var(--r-md);
+    color: var(--chrome);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.15rem;
+  }
+
+  .nav-item svg {
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  .nav-item:hover {
+    background: var(--graphite-2);
+  }
+
+  .nav-item.active {
+    background: rgba(76, 141, 255, 0.14);
+    color: var(--ion);
+  }
+
+  .nav-item.active svg {
+    opacity: 1;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .sidebar-user span {
+    font-size: 0.8rem;
+    color: var(--chrome-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .content {
+    flex: 1;
+    min-width: 0;
+    padding: 1.75rem 2.25rem 4rem;
+  }
+
+  .content-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .content-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .area-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .area-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .device-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .device-row:last-child {
+    border-bottom: none;
+  }
+
+  .device-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--graphite-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--chrome-dim);
+  }
+
+  .device-row.online .device-icon {
+    background: rgba(76, 141, 255, 0.14);
+    color: var(--ion);
+  }
+
+  /* Camera preview tile — simulated feed, no real stream. */
+  .camera-tile {
+    position: relative;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    height: 108px;
+    margin-bottom: 0.6rem;
+    background: linear-gradient(135deg, #14161a 0%, #1c2430 45%, #14161a 100%);
+    background-size: 220% 220%;
+    animation: camera-drift 9s ease-in-out infinite;
+    border: 1px solid var(--hairline);
+  }
+
+  .camera-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+  }
+
+  @keyframes camera-drift {
+    0% {
+      background-position: 0% 30%;
+    }
+    50% {
+      background-position: 100% 70%;
+    }
+    100% {
+      background-position: 0% 30%;
+    }
+  }
+
+  .camera-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(11, 12, 14, 0.75);
+    color: var(--platinum);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+  }
+
+  .camera-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--danger);
+    animation: camera-pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes camera-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  .camera-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.4rem 0.6rem;
+    background: linear-gradient(0deg, rgba(11, 12, 14, 0.85), transparent);
+    font-size: 0.78rem;
+    color: var(--platinum);
+  }
+
+  /* Toggle switch used for Adaptive Comfort / automation enable states. */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .switch-track {
+    position: absolute;
+    inset: 0;
+    background: var(--graphite-2);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .switch-track::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 2px;
+    top: 2px;
+    background: var(--chrome);
+    border-radius: 50%;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .switch input:checked + .switch-track {
+    background: var(--ion-dim);
+    border-color: var(--ion);
+  }
+
+  .switch input:checked + .switch-track::before {
+    transform: translateX(18px);
+    background: var(--platinum);
+  }
+
+  .control-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    color: var(--chrome-dim);
+    background: var(--graphite-2);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .stat-card {
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    background: var(--graphite);
+    padding: 1.1rem 1.25rem;
+  }
+
+  .stat-card .stat-label {
+    color: var(--slate);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .stat-card .stat-value {
+    font-family: var(--font-display), sans-serif;
+    font-size: 1.6rem;
+    margin-top: 0.25rem;
+  }
+
+  .stat-card .stat-sub {
+    color: var(--chrome-dim);
+    font-size: 0.8rem;
+    margin-top: 0.15rem;
+  }
+
+  .brightness-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-top: 0.4rem;
+  }
+
+  input[type='range'] {
+    flex: 1;
+    appearance: none;
+    height: 4px;
+    background: var(--graphite-2);
+    border-radius: 999px;
+    outline: none;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--ion);
+    cursor: pointer;
+    border: 2px solid var(--platinum);
+  }
+
+  input[type='range']::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--ion);
+    cursor: pointer;
+    border: 2px solid var(--platinum);
+  }
+
+  .summary-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .summary-list li {
+    position: relative;
+    padding: 0.4rem 0 0.4rem 1.1rem;
+    font-size: 0.88rem;
+    color: var(--chrome);
+    line-height: 1.5;
+  }
+
+  .summary-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75rem;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ion);
+  }
+
+  .scenario-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: var(--graphite-2);
+    border: 1px solid var(--hairline-strong);
+  }
+
+  .emergency-card {
+    border-color: rgba(239, 68, 68, 0.4);
+  }
+
+  .emergency-button,
+  button.emergency-button {
+    background: var(--danger);
+    color: var(--platinum);
+  }
+
+  .emergency-button:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  /* Isometric villa view — a real (if simplified) 3D scene built from CSS cubes,
+     not a photorealistic model. Each tile's face colors are driven directly by
+     live device state, so any command sent anywhere in the app (or clicking a
+     tile itself) visibly updates the scene. */
+  .iso-scene {
+    padding: 3rem 1rem 4rem;
+    overflow-x: auto;
+  }
+
+  .iso-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 110px);
+    gap: 26px;
+    transform-style: preserve-3d;
+    transform: rotateX(55deg) rotateZ(45deg);
+    margin: 2rem auto;
+    width: max-content;
+  }
+
+  .iso-cube {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+
+  .iso-face {
+    position: absolute;
+    transition: background 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .iso-top {
+    width: 110px;
+    height: 110px;
+    transform: translateZ(34px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+  }
+
+  .iso-side-right {
+    width: 34px;
+    height: 110px;
+    top: 0;
+    right: 0;
+    transform-origin: right center;
+    transform: rotateY(90deg) translateZ(76px);
+    filter: brightness(0.55);
+  }
+
+  .iso-side-front {
+    width: 110px;
+    height: 34px;
+    bottom: 0;
+    left: 0;
+    transform-origin: bottom center;
+    transform: rotateX(-90deg) translateZ(76px);
+    filter: brightness(0.75);
+  }
+
+  .iso-label {
+    transform: rotateZ(-45deg) rotateX(-55deg);
+    color: var(--void);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+    pointer-events: none;
+  }
+
+  .iso-badge-row {
+    transform: rotateZ(-45deg) rotateX(-55deg);
+    display: flex;
+    gap: 3px;
+    margin-top: 2px;
+    pointer-events: none;
+  }
+
+  .iso-badge {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .iso-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--chrome-dim);
+  }
+
+  .iso-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .iso-legend .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  /* Animated gradient-border button — same visual idea as the common
+     "hover-border-gradient" React/framer-motion component, recreated in plain
+     CSS (conic-gradient + @property) so it matches this app's dependency-free
+     design system instead of pulling in Tailwind/shadcn/framer-motion for one
+     effect. A rotating conic gradient sits behind the button; the button's own
+     background covers everything except a 1.5px ring, so only the ring shows
+     the moving gradient. Falls back to a plain static border in browsers
+     without @property support (older Safari) — never broken, just not animated. */
+  @property --btn-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes btn-border-spin {
+    to {
+      --btn-angle: 360deg;
+    }
+  }
+
+  .btn-aurora {
+    position: relative;
+    z-index: 0;
+    border-radius: 999px;
+    border: none;
+    background: var(--graphite);
+    color: var(--platinum);
+    isolation: isolate;
+  }
+
+  .btn-aurora::before {
+    content: '';
+    position: absolute;
+    inset: -1.5px;
+    z-index: -1;
+    border-radius: inherit;
+    background: conic-gradient(from var(--btn-angle), transparent 0%, var(--ion) 12%, var(--platinum) 20%, transparent 32%, transparent 100%);
+    animation: btn-border-spin 2.6s linear infinite;
+  }
+
+  .btn-aurora::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--graphite);
+  }
+
+  .btn-aurora:hover:not(:disabled)::before {
+    background: conic-gradient(from var(--btn-angle), transparent 0%, var(--ion) 30%, var(--platinum) 45%, var(--ion) 60%, transparent 80%);
+  }
+
+  .btn-aurora:disabled {
+    opacity: 0.6;
+  }
+
+  .btn-aurora.emergency-button::after {
+    background: var(--danger);
+  }
+
+}
+
+@tailwind components;
+@tailwind utilities;
+
+/* The legacy element rules above give every <button> a solid platinum fill.
+   Screens built with utility classes opt out via .ui-reset so those
+   defaults do not bleed through. Kept in the base layer so utility
+   classes still win. */
+@layer base {
+  :where(.ui-reset) button,
+  :where(.ui-reset) input {
+    font: inherit;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    border: none;
+    border-radius: 0;
+  }
+
+  :where(.ui-reset) button:hover:not(:disabled) {
+    opacity: 1;
+  }
+}
+
+/* ── shadcn-style semantic tokens ──────────────────────────────────────
+   Added for the components under src/components/ui, which are written
+   light-first with `dark:` variants. The product ships dark-only (<html>
+   carries `class="dark"`), so the .dark values are the ones that render;
+   they are tuned to the SYLTRA palette above rather than shadcn's defaults
+   so the sign-in screen and the dashboard read as one product. */
+@layer base {
+  :root {
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(0, 0%, 0%);
+    --skeleton: hsl(0, 0%, 90%);
+    --btn-border: hsl(214deg, 31.8%, 91.4%);
+    --input: hsl(220, 20%, 90%);
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: #05080f;
+    --foreground: var(--platinum);
+    --skeleton: #132038;
+    --btn-border: rgba(199, 204, 211, 0.14);
+    --input: #0d131d;
+    --radius: 0.5rem;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .g-button {
+    @apply rounded-[var(--radius)] border;
+    border-color: var(--btn-border);
+  }
+}
