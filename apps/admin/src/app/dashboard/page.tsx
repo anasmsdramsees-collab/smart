@@ -473,21 +473,20 @@ export default function DashboardPage() {
             <p className="truncate text-[11px] text-[#6c7a90] sm:text-[12px]">{t.shell.tagline}</p>
           </div>
 
-          {/* Scrolls sideways on a phone rather than wrapping into a tall stack */}
           <div
             dir={dir}
-            className="order-last flex w-full gap-2.5 overflow-x-auto pb-1 lg:order-none lg:w-auto lg:flex-1 lg:flex-wrap lg:justify-center lg:overflow-visible lg:pb-0"
+            className="order-last grid w-full grid-cols-2 gap-2 lg:order-none lg:flex lg:w-auto lg:flex-1 lg:flex-wrap lg:justify-center lg:gap-2.5"
           >
             {STATUS.map(({ label, value, Icon, tint }) => (
               <div
                 key={label}
-                className="flex shrink-0 items-center gap-3 rounded-xl border border-white/[0.07] bg-[#0b1018] px-3.5 py-2"
+                className="flex min-w-0 items-center justify-between gap-2 rounded-xl border border-white/[0.07] bg-[#0b1018] px-3 py-2 lg:justify-start lg:gap-3 lg:px-3.5"
               >
-                <div className="text-right">
-                  <div className="text-[10px] leading-tight text-[#6c7a90]">{label}</div>
-                  <div className="text-[13px] font-bold leading-tight">{value}</div>
+                <div className="min-w-0 text-start">
+                  <div className="truncate text-[10px] leading-tight text-[#6c7a90]">{label}</div>
+                  <div className="truncate text-[13px] font-bold leading-tight">{value}</div>
                 </div>
-                <Icon size={17} className={tint} />
+                <Icon size={17} className={`shrink-0 ${tint}`} />
               </div>
             ))}
           </div>
