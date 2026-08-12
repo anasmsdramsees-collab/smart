@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Plus, Play, Pause, Loader2 } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import { useI18n } from '@/components/locale-provider';
+import { DEMO_GOALS, DEMO_ROOMS, isDemo } from '@/lib/demo';
 
 /* Mirrors services/api/src/adaptive/dto/create-goal.dto.ts. */
 const OBJECTIVES = ['comfort', 'energy_saving', 'security', 'sleep', 'custom'] as const;
@@ -52,6 +53,14 @@ export default function AdaptivePanel({ organizationId }: { organizationId: stri
 
   const load = useCallback(async () => {
     if (!organizationId) return;
+    if (isDemo()) {
+      // Seeded in-memory; creating and pausing below stay client-side too, so
+      // the panel is fully interactive without a backend.
+      setGoals((current) => (current.length ? current : [...DEMO_GOALS]));
+      setRooms(DEMO_ROOMS);
+      setLoading(false);
+      return;
+    }
     try {
       const [g, r] = await Promise.all([
         apiFetch<Goal[]>(`/v1/organizations/${organizationId}/adaptive/goals`),
@@ -82,6 +91,26 @@ export default function AdaptivePanel({ organizationId }: { organizationId: stri
         if (tempMax) constraints.push({ type: 'temperature_max', value: Number(tempMax) });
       }
 
+      if (isDemo()) {
+        setGoals((gs) => [
+          {
+            id: `demo-${Date.now()}`,
+            objective,
+            name: name || undefined,
+            roomId: roomId || undefined,
+            constraints,
+            priority: Number(priority) || 0,
+            activeFrom: activeFrom || undefined,
+            activeTo: activeTo || undefined,
+            status: 'active',
+          },
+          ...gs,
+        ]);
+        setComposing(false);
+        setName('');
+        return;
+      }
+
       await apiFetch(`/v1/organizations/${organizationId}/adaptive/goals`, {
         method: 'POST',
         body: JSON.stringify({
@@ -107,6 +136,7 @@ export default function AdaptivePanel({ organizationId }: { organizationId: stri
   async function toggleGoal(goal: Goal) {
     const next = goal.status === 'active' ? 'abandoned' : 'active';
     setGoals((gs) => gs.map((g) => (g.id === goal.id ? { ...g, status: next } : g)));
+    if (isDemo()) return;
     try {
       await apiFetch(`/v1/organizations/${organizationId}/adaptive/goals/${goal.id}`, {
         method: 'PATCH',

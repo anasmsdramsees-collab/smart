@@ -11,6 +11,7 @@ import {
 import { apiFetch, setToken } from '@/lib/api';
 import { AnimatedForm, Ripple, TechOrbitDisplay } from '@/components/ui/modern-animated-sign-in';
 import { LocaleToggle, useI18n } from '@/components/locale-provider';
+import { isDemo } from '@/lib/demo';
 
 interface AuthResponse {
   accessToken: string;
@@ -76,6 +77,13 @@ export default function LoginPage() {
     setError(null);
     setBusy(true);
     try {
+      // No backend behind a demo deployment — accept the form and move on.
+      if (isDemo()) {
+        setToken('demo');
+        router.push('/dashboard');
+        return;
+      }
+
       const path = mode === 'login' ? '/v1/auth/login' : '/v1/auth/register';
       const body =
         mode === 'login' ? { email, password } : { email, password, organizationName };

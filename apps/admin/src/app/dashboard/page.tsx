@@ -13,6 +13,7 @@ import {
 import HouseMap from './HouseMap';
 import AdaptivePanel from './AdaptivePanel';
 import { LocaleToggle, useI18n } from '@/components/locale-provider';
+import { DEMO_ORG_ID, isDemo } from '@/lib/demo';
 import type { Dict } from '@/lib/i18n';
 
 /* ── Shell primitives ─────────────────────────────────────────────────── */
@@ -171,6 +172,11 @@ export default function DashboardPage() {
   const [orgId, setOrgId] = useState('');
 
   useEffect(() => {
+    if (isDemo()) {
+      setOrgId(DEMO_ORG_ID);
+      setLoading(false);
+      return;
+    }
     apiFetch<{ id: string }[]>('/v1/organizations')
       .then((orgs) => setOrgId(orgs[0]?.id ?? ''))
       .catch((err) => console.error('Failed to load organizations:', err))
